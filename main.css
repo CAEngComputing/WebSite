@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2E3141; /* Cor de fundo inspirada no tema Winter is Coming */
+    color: #a2faff; /* Cor do texto */
+}
+.top_section{
+    position: relative;
+    text-align: center;
+    padding: 4px;
+}
+header {
+    background-color: #1B202C; /* Cor de fundo do cabeçalho */
+    color: #40c6c8; /* Cor do texto do cabeçalho */
+    padding: 30px;
+    text-align: center;
+    position: relative;
+}
+header .logo-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Largura do contêiner do logo */
+    height: auto;
+    cursor: pointer; /* Adiciona cursor de mão para indicar clicabilidade */
+}
+header .logo {
+    width: 100%; /* Preenche todo o espaço do contêiner */
+    height: auto;
+}
+nav {
+    display: block;
+    padding: 10px;
+    margin-top: 20px;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #64bdd8; /* Cor do texto dos botões de navegação */
+    font-weight: bold;
+}
+section {
+    padding: 20px;
+}
+footer {
+    background-color: #1B202C; /* Cor de fundo do rodapé */
+    color: #558A9A; /* Cor do texto do rodapé */
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Media Query para dispositivos móveis */
+@media screen and (max-width: 600px) {
+    header .logo-container {
+        top: 5px;
+        left: 5px;
+        width: 80px;
+    }
+    nav.active {
+    display: block;
+    top: calc(100% + 10px); /* Define a posição para abaixo do header mais o espaço extra */
+    }
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    nav ul li {
+        display: block;
+        margin-bottom: 10px;
+    }
+    nav ul li a {
+        text-decoration: none;
+        color: #64bdd8; /* Cor do texto dos botões de navegação */
+        font-weight: bold;
+    }
+}
