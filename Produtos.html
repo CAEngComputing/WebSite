@@ -6,6 +6,7 @@
     <title>Loja de Produtos</title>
     <link rel="stylesheet" type="text/css" href="produtos.css">
     <script src="https://apis.google.com/js/api.js"></script>
+    
     <script src="main.js"></script>
 </head>
 <body>
@@ -32,30 +33,54 @@
 
 <section>
     <div class="produto">
-        <div class="info-produto">
-            <h2>Nome do Produto 1</h2>
-            <p>Descrição breve do Produto 1.</p>
-            <p class="preco">Preço: R$ XX,XX</p>
-            <table>
-                <tr>
-                    <th>Coluna 1</th>
-                    <th>Coluna 2</th>
-                    <th>Coluna 3</th>
-                </tr>
-                <tr>
-                    <td>Dado 1</td>
-                    <td>Dado 2</td>
-                    <td>Dado 3</td>
-                </tr>
-                <!-- Adicione mais linhas conforme necessário -->
-            </table>
-        </div>
+        <h2>Camisa</h2>
+        <div class="produto-interno">
+            <div class="info-produto">
+                
+                <p>Descrição breve do Produto 1.</p>
+                <p class="preco">Preço: R$ 25,00</p>
+                <div class="tabela">
+                    <table>
+                        <tr>
+                            <th>Tamanho</th>
+                            <th>Preto</th>
+                            <th>Branco</th>
+                        </tr>
+                        <tr class="entre-linhas">
+                            <td>P</td>
+                            <td id="PretoP"></td>
+                            <td id="BrancoP"></td>
+                        </tr>
+                        <tr class="entre-linhas">
+                            <td>M</td>
+                            <td id="PretoM"></td>
+                            <td id="BrancoM"></td>
+                        </tr>
+                        <tr class="entre-linhas">
+                            <td>G</td>
+                            <td id="PretoG"></td>
+                            <td id="BrancoG"></td>
+                        </tr>
+                        <tr class="entre-linhas">
+                            <td>GG</td>
+                            <td id="PretoGG"></td>
+                            <td id="BrancoGG"></td>
+                        </tr>
+                        <tr>
+                            <td>EG</td>
+                            <td id="PretoEG"></td>
+                            <td id="BrancoEG"></td>
+                        </tr>
+                        <!-- Adicione mais linhas conforme necessário -->
+                    </table>        
+                    </div>
+            </div>
 
-        <div class="divimg-produto">
-            <img class="imagem-produto" src="https://png.pngtree.com/png-clipart/20230508/original/pngtree-future-cat-robot-illustration-png-image_9150204.png" alt="Produto 1" style="max-width: 100%;">
-            <button class="btn-comprar">Adicionar ao Carrinho</button>
+            <div class="divimg-produto">
+                <img class="imagem-produto" src="https://png.pngtree.com/png-clipart/20230508/original/pngtree-future-cat-robot-illustration-png-image_9150204.png">
+                <button class="btn-comprar" id="btnInicio">fazer pedido</button>
+            </div>
         </div>
-        
     </div>
     
     

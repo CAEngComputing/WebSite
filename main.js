@@ -1,60 +1,65 @@
-    var cellA1Value;  // Variável para armazenar o valor da célula A1
-    
-        // Adicionar um ouvinte de eventos para o botão de início dentro da barra de navegação
-        document.addEventListener("DOMContentLoaded", function() {
-            var btnInicio = document.getElementById("btnInicio");
-            btnInicio.addEventListener("click", function(event) {
-                event.preventDefault(); // Evita o comportamento padrão do link
-                extractCellValueFromCSV();
-                console.log(cellA1Value);
-
-            });
-        });
 
 
-    function toggleNavOverlay() {
-        var nav = document.getElementById("navMenu");
-        if (window.innerWidth <= 600) {
-            if (nav.style.display === 'block') {
-                nav.style.display = 'none';
-            } else {
-                nav.style.display = 'block';
-            }
+function toggleNavOverlay() {
+    var nav = document.getElementById("navMenu");
+    if (window.innerWidth <= 600) {
+        if (nav.style.display === 'block') {
+            nav.style.display = 'none';
+        } else {
+            nav.style.display = 'block';
         }
     }
-  
-    // Exibe o menu de navegação automaticamente em telas maiores
-    window.addEventListener('resize', function() {
-        var nav = document.getElementById("navMenu");
-        if (window.innerWidth > 600) {
-            nav.style.display = 'block';
-        }else{
-            nav.style.display = 'none';
-        }
-    });
-
-// URL do arquivo CSV
-var csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5COFcqaZWhDQ5ILBB7j2isfEQnZGbfh5eayiY_bfQUn0aN7n9RdHNGWjXUsmUPfCFHoLVW12QHLdD/pub?output=csv";
-
-// Função para extrair o valor da célula A1
-function extractCellValueFromCSV() {
-    fetch(csvUrl)
-        .then(response => response.text())
-        .then(data => {
-            // Dividir o texto do CSV em linhas e células
-            var rows = data.split('\n');
-            var cells = rows[0].split(',');
-            
-            // Obter o valor da célula A1
-            var cellA1Value = cells[0]; // A1 é a primeira célula na primeira linha
-            
-            // Exibir o valor da célula A1
-            console.log("Valor da célula A1:", cellA1Value);
-        })
-        .catch(error => console.error('Erro ao extrair o valor da célula A1:', error));
 }
 
+// Exibe o menu de navegação automaticamente em telas maiores
+window.addEventListener('resize', function() {
+    var nav = document.getElementById("navMenu");
+    if (window.innerWidth > 600) {
+        nav.style.display = 'block';
+    } else {
+        nav.style.display = 'none';
+    }
+});
 
 
 
-    
+//ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+function init() {
+    gapi.load('client', start);
+}
+
+async function start() {
+    // 1. Carregar a biblioteca cliente do Google Sheets
+    await gapi.client.init({
+        'apiKey': 'AIzaSyAlo7cHn7onfmt1toqphJKiiuJbYmEJgEA',
+        // Your API key will be automatically added to the Discovery Document URLs.
+        'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+    });
+
+    // 2. Carregar os valores da planilha
+    let response = await gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: '1hf8UC5AwSu3jy7RuLA4Pm3pOj5_vvCBKt3n04rdh5kk',
+        range: 'Página1!A1:B6',
+    });
+
+    // 3. Mostrar os valores da planilha
+    let range = response.result;
+    if (range.values.length > 0) {
+
+        document.getElementById('PretoP').innerText = `${range.values[1][0]}`;
+        document.getElementById('BrancoP').innerText = `${range.values[1][1]}`;
+        document.getElementById('PretoM').innerText = `${range.values[2][0]}`;
+        document.getElementById('BrancoM').innerText = `${range.values[2][1]}`;        
+        document.getElementById('PretoG').innerText = `${range.values[3][0]}`;
+        document.getElementById('BrancoG').innerText = `${range.values[3][1]}`;
+        document.getElementById('PretoGG').innerText = `${range.values[4][0]}`;
+        document.getElementById('BrancoGG').innerText = `${range.values[4][1]}`;
+        document.getElementById('PretoEG').innerText = `${range.values[5][0]}`;
+        document.getElementById('BrancoEG').innerText = `${range.values[5][1]}`;
+
+    } else {
+        console.log('No data found.');
+    }
+}
+
+init();
