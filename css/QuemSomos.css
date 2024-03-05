@@ -89,16 +89,3 @@ footer {
         font-weight: bold;
     }
 }
-        /* Estilos adicionais */
-        #produtos {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .produto {
-            width: calc(33.33% - 20px); /* Distribui os produtos em três colunas */
-            margin: 10px;
-            padding: 20px;
-            border: 2px solid #ddd; /* Borda sólida de 2px com cor cinza */
-            background-color: #f9f9f9; /* Fundo cinza claro */
-            box-sizing: border-box;
-        }
