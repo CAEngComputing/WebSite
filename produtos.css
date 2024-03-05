@@ -137,6 +137,7 @@ footer {
     height: auto; /* Mantém a proporção original da imagem */
     max-width: 100%; /* Garante que a imagem não ultrapasse a largura da página */
     left: auto;
+    border-radius: 20px;
 }
 
 .info-produto {
