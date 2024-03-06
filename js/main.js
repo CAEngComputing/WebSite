@@ -1,5 +1,11 @@
 
 
+// Fecha o menu de navegação automaticamente quando a página é carregada ou atualizada
+window.addEventListener('load', function() {
+    var nav = document.getElementById("navMenu");
+    nav.style.display = 'none';
+});
+
 function toggleNavOverlay() {
     var nav = document.getElementById("navMenu");
     if (window.innerWidth <= 600) {
