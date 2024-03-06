@@ -82,3 +82,16 @@ th {
 
 
 
+/* Media Query para dispositivos móveis */
+@media screen and (max-width: 600px) {
+    .produto-interno{
+
+        flex-direction: column-reverse; /* Inverte a ordem das divs no eixo principal */
+    }
+    .info-produto, .divimg-produto{
+        order: 0; /* Define a ordem de exibição */
+    }
+    .divimg-produto{
+        order: 1; /* Define a ordem de exibição */
+    }
+}
