@@ -26,7 +26,7 @@ header .logo-container {
     left: 10px;
     width: 100px; /* Largura do contêiner do logo */
     height: auto;
-    cursor: pointer; /* Adiciona cursor de mão para indicar clicabilidade */
+    
 }
 
 header .logo {
@@ -70,13 +70,35 @@ footer {
     width: 100%;
 }
 
+/* Estilos padrão para o botão do menu */
+.menu-button {
+    display: none; /* Oculta o botão em telas maiores */
+
+}
+
 /* Media Query para dispositivos móveis */
 @media screen and (max-width: 600px) {
+
+    .menu-button {
+        display: block; /* Exibe o botão em telas menores */
+        position:absolute; /* Fixa o botão na tela */
+        top: 10px; /* Ajusta a posição vertical */
+        right: 10px; /* Ajusta a posição horizontal */
+        z-index: 999; /* Garante que o botão esteja acima de outros elementos */
+        background-color: #1b202c00;
+        width: 40px;
+        height: 40px;
+        background-image: url("../image/menu.png"); /* Substitua 'nome-da-pasta/imagem.png' pelo caminho real para sua imagem */
+        background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o botão */
+        background-repeat: no-repeat; /* Evita a repetição da imagem */
+        border: none; /* Remove a borda do botão */
+        cursor: pointer; /* Adiciona cursor de ponteiro ao passar o mouse */
+    }
+
     header .logo-container {
         top: 5px;
         left: 5px;
         width: 70px;
-
     }
 
     nav.active {
