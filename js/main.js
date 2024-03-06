@@ -3,7 +3,10 @@
 // Fecha o menu de navegação automaticamente quando a página é carregada ou atualizada
 window.addEventListener('load', function() {
     var nav = document.getElementById("navMenu");
-    nav.style.display = 'none';
+    if (window.innerWidth <= 600){
+        nav.style.display = 'none';
+    }
+
 });
 
 function toggleNavOverlay() {
@@ -51,7 +54,6 @@ async function start() {
     // 3. Mostrar os valores da planilha
     let range = response.result;
     if (range.values.length > 0) {
-
         document.getElementById('PretoP').innerText = `${range.values[1][0]}`;
         document.getElementById('BrancoP').innerText = `${range.values[1][1]}`;
         document.getElementById('PretoM').innerText = `${range.values[2][0]}`;
@@ -62,10 +64,11 @@ async function start() {
         document.getElementById('BrancoGG').innerText = `${range.values[4][1]}`;
         document.getElementById('PretoEG').innerText = `${range.values[5][0]}`;
         document.getElementById('BrancoEG').innerText = `${range.values[5][1]}`;
-
     } else {
         console.log('No data found.');
     }
+
+
 }
 
 init();
