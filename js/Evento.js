@@ -1,4 +1,7 @@
 
+
+
+
 // Fecha o menu de navegação automaticamente quando a página é carregada ou atualizada
 window.addEventListener('load', function() {
     var nav = document.getElementById("navMenu");
@@ -30,11 +33,24 @@ window.addEventListener('resize', function() {
 });
 
 
+var imgelement;
 
-//carrosel 
+// Definir uma função para atualizar os dados
+function atualizarDados() {
+    // Coloque aqui o código para atualizar os dados conforme necessário
+    for (let index = 0; index < imgelement.length; index++) {
+        imgelement[index].style.width = ((window.innerWidth/3) -10) +"px" ;
+        imgelement[index].style.height = "auto";
+    }
 
+}
 
-
+// Adicionar um ouvinte de evento para o redimensionamento da tela
+window.addEventListener('resize', function(event){
+    // Chamar a função de atualização de dados quando o redimensionamento ocorrer
+    atualizarDados();
+});
+document.addEventListener("DOMContentLoaded", function() {
 // acesso do google drive
 function init() {
     gapi.load('client', start);
@@ -67,23 +83,52 @@ async function start() {
                     var file = files[i];
                     console.log(file.name + ' (' + file.id + ')');
 
-                    // 4. Adicionar cada arquivo ao carrossel
-                    var swiperContainer = document.querySelector('.mySwiper');
-                    var slide = document.createElement('swiper-slide');
-                    var img = document.createElement('img');
-                    img.src = 'https://drive.google.com/thumbnail?id=' + file.id + '&sz=w1000';
-                    slide.appendChild(img);
-                    swiperContainer.appendChild(slide);
+                        // Criar um elemento <img> para cada arquivo
+                        var img = document.createElement('img');
+                        img.src = 'https://drive.google.com/thumbnail?id=' + file.id + '&sz=w1000';
+                        img.alt = file.name;
+                        img.id = "aaaaa";
+                        img.style.width = ((window.innerWidth/3) -10) +"px" ;
+                        img.style.marginLeft = "5px";
+                        img.style.marginBottom = "10px"
+                        img.style.marginRight = "5px";
+
+
+                        // Adicionar o elemento <img> ao slideInner
+                        document.querySelector('#img').appendChild(img);
                 }
+
             } else {
                 console.log('Nenhum arquivo encontrado.');
             }
+
+            const imgs = document.getElementById("img");
+            imgelement = imgs.querySelectorAll("*");
+
+            
+            let idx = 0;
+        
+            function carrossel() {
+                idx++;
+        
+                if (idx > imgelement.length - 3) {
+                    idx = 0;
+                }
+                if (imgs) {
+                    imgs.style.transform = `translateX(${-idx * ((window.innerWidth/3) )}px)`;
+                }
+            }
+        
+            setInterval(carrossel, 1800);
         });
 
     } catch (error) {
         console.error("Erro ao inicializar a API do Google Drive: ", error);
     }
+   
+       
+    
 }
 
 init();
-
+});
