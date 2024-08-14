@@ -1,139 +1,130 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste de Pagamento</title>
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .product {
-            margin-bottom: 20px;
-        }
-        .price {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        #wallet_container {
-            margin-top: 20px;
-        }
-    </style>
+    <title>Produto com Estoque Limitado</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function initGoogleAPI() {
+                gapi.load('client', start);
+            }
+
+            async function start() {
+                await gapi.client.init({
+                    'apiKey': 'AIzaSyAlo7cHn7onfmt1toqphJKiiuJbYmEJgEA',
+                    'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                });
+
+                let response = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1hf8UC5AwSu3jy7RuLA4Pm3pOj5_vvCBKt3n04rdh5kk',
+                    range: 'Página1!A1:B6',
+                });
+
+                let range = response.result;
+                if (range.values.length > 0) {
+                    let estoque = {
+                        'P': parseInt(range.values[1][0]),
+                        'M': parseInt(range.values[2][0]),
+                        'G': parseInt(range.values[3][0]),
+                        'GG': parseInt(range.values[4][0]),
+                        'EG': parseInt(range.values[5][0])
+                    };
+
+                    // Imprime o estoque no console
+                    console.log("Estoque atual:", estoque);
+
+                    // Atualiza os elementos HTML com os valores de estoque
+                    document.getElementById('PretoP').innerText = `${estoque['P']}`;
+                    document.getElementById('PretoM').innerText = `${estoque['M']}`;
+                    document.getElementById('PretoG').innerText = `${estoque['G']}`;
+                    document.getElementById('PretoGG').innerText = `${estoque['GG']}`;
+                    document.getElementById('PretoEG').innerText = `${estoque['EG']}`;
+
+                    // Chama a função para atualizar o seletor de tamanho e o estoque exibido
+                    updateSizeOptions(estoque);
+                } else {
+                    console.log('No data found.');
+                }
+            }
+
+            function updateSizeOptions(estoque) {
+                let sizeSelect = document.getElementById('size');
+                let quantityInput = document.getElementById('quantity');
+                let estoqueDisplay = document.getElementById('estoque-display');
+
+                // Verifica cada opção de tamanho e habilita ou desabilita com base no estoque
+                for (let option of sizeSelect.options) {
+                    let size = option.value;
+                    if (estoque[size] && estoque[size] > 0) {
+                        option.disabled = false;
+                    } else {
+                        option.disabled = true;
+                    }
+                }
+
+                // Atualiza a quantidade máxima permitida com base no estoque do tamanho selecionado
+                sizeSelect.addEventListener('change', function() {
+                    let selectedSize = sizeSelect.value;
+                    let maxEstoque = estoque[selectedSize] || 0;
+                    quantityInput.max = maxEstoque;
+                    quantityInput.value = 1;  // Reseta a quantidade para 1
+                    estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
+                });
+
+                // Define o valor máximo e exibe o estoque para o tamanho inicialmente selecionado
+                let selectedSize = sizeSelect.value;
+                let maxEstoque = estoque[selectedSize] || 0;
+                quantityInput.max = maxEstoque;
+                estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
+            }
+
+            // Função para obter o valor atual da cor selecionada
+            function getSelectedColor() {
+                let colorSelect = document.getElementById('color');
+                let selectedColor = colorSelect.value;
+                console.log("Cor selecionada: " + selectedColor);
+                return selectedColor;
+            }
+
+            // Adiciona o evento de mudança ao seletor de cor
+            document.getElementById('color').addEventListener('change', getSelectedColor);
+
+            initGoogleAPI();
+        });
+    </script>
 </head>
 <body>
+    <div class="info-produto ">
+        <div class="product-options">
+            <form>
+                <div class="option">
+                    <label for="color">Cor:</label>
+                    <select id="color" name="color">
+                        <option value="branco">Branco</option>
+                        <option value="preto">Preto</option>
+                    </select>
+                </div>
 
-<div class="container">
-    <h1>Teste de Pagamento</h1>
-    <div class="product">
-        <h2>Produto de Teste</h2>
-        <p class="price">Preço: R$ 75,76</p>
+                <div class="option">
+                    <label for="size">Tamanho:</label>
+                    <select id="size" name="size">
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="EG">EG</option>
+                    </select>
+                </div>
+
+                <div class="option" style="width: 90%;">
+                    <label for="quantity">Quantidade:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1">
+                    <p id="estoque-display" style="margin-top: 5px; color: black;">Estoque disponível: --</p>
+                </div>
+
+                <button type="submit" class="submit-btn">Adicionar ao Carrinho</button>
+            </form>
+        </div>
     </div>
-    <div id="wallet_container"></div>
-</div>
-
-<script>
-    // Configura o SDK do Mercado Pago
-    const mp = new MercadoPago('APP_USR-694388d5-4ce6-4006-8de2-2b58d53fcd48', {
-        locale: 'pt-BR'
-    });
-
-    // Função para criar a preferência de pagamento
-    async function createPreference() {
-        const preference = {
-            items: [
-                {
-                    id: "item-ID-1234",
-                    title: "Produto de Teste",
-                    currency_id: "BRL",
-                    picture_url: "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
-                    description: "Descrição do Produto de Teste",
-                    category_id: "art",
-                    quantity: 1,
-                    unit_price: 75.76
-                }
-            ],
-            payer: {
-                name: "João",
-                surname: "Silva",
-                email: "user@email.com",
-                phone: {
-                    area_code: "11",
-                    number: "4444-4444"
-                },
-                identification: {
-                    type: "CPF",
-                    number: "19119119100"
-                },
-                address: {
-                    street_name: "Street",
-                    street_number: 123,
-                    zip_code: "06233200"
-                }
-            },
-            back_urls: {
-                success: "https://www.success.com",
-                failure: "http://www.failure.com",
-                pending: "http://www.pending.com"
-            },
-            auto_return: "approved",
-            notification_url: "https://www.your-site.com/ipn",
-            statement_descriptor: "MEUNEGOCIO",
-            external_reference: "Reference_1234",
-            expires: true,
-            expiration_date_from: "2016-02-01T12:00:00.000-04:00",
-            expiration_date_to: "2016-02-28T12:00:00.000-04:00"
-        };
-
-        try {
-            const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'APP_USR-1774256113553845-080816-fb4dc18c2e3a3155031158ecb0f455fd-205112629',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(preference)
-            });
-            const data = await response.json();
-            console.log(data);
-
-            // Utilize o ID da preferência para iniciar o checkout
-            initCheckout(data.id);
-        } catch (error) {
-            console.error('Error creating preference:', error);
-        }
-    }
-
-    // Função para iniciar o checkout com o ID da preferência
-    function initCheckout(preferenceId) {
-        mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: preferenceId,
-            },
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Chama a função para criar a preferência e iniciar o checkout quando a página carregar
-        createPreference();
-    });
-</script>
-
 </body>
 </html>

@@ -136,19 +136,72 @@ async function start() {
 
     let range = response.result;
     if (range.values.length > 0) {
-        document.getElementById('PretoP').innerText = `${range.values[1][0]}`;
-        document.getElementById('BrancoP').innerText = `${range.values[1][1]}`;
-        document.getElementById('PretoM').innerText = `${range.values[2][0]}`;
-        document.getElementById('BrancoM').innerText = `${range.values[2][1]}`;
-        document.getElementById('PretoG').innerText = `${range.values[3][0]}`;
-        document.getElementById('BrancoG').innerText = `${range.values[3][1]}`;
-        document.getElementById('PretoGG').innerText = `${range.values[4][0]}`;
-        document.getElementById('BrancoGG').innerText = `${range.values[4][1]}`;
-        document.getElementById('PretoEG').innerText = `${range.values[5][0]}`;
-        document.getElementById('BrancoEG').innerText = `${range.values[5][1]}`;
+        let estoque = {
+            'P-P': parseInt(range.values[1][1]),
+            'P-M': parseInt(range.values[2][1]),
+            'P-G': parseInt(range.values[3][1]),
+            'P-GG': parseInt(range.values[4][1]),
+            'P-EG': parseInt(range.values[5][1]),
+            'B-P': parseInt(range.values[1][0]),
+            'B-M': parseInt(range.values[2][0]),
+            'B-G': parseInt(range.values[3][0]),
+            'B-GG': parseInt(range.values[4][0]),
+            'B-EG': parseInt(range.values[5][0])
+        };
+        
+        // Chama a função para atualizar o seletor de tamanho e o estoque exibido
+        updateSizeOptions(estoque);
     } else {
         console.log('No data found.');
     }
+}
+
+function updateSizeOptions(estoque) {
+    let sizeSelect = document.getElementById('size');
+    let quantityInput = document.getElementById('quantity');
+    let estoqueDisplay = document.getElementById('estoque-display');
+    console.log(estoque)
+    
+    // Verifica cada opção de tamanho e habilita ou desabilita com base no estoque
+    for (let option of sizeSelect.options) {
+        let size ="P-" + option.value;
+        if (estoque[size] && estoque[size] > 0) {
+            option.disabled = false;
+        } else {
+            option.disabled = true;
+        }
+    }
+
+    // Muda o ponteiro para a próxima opção habilitada
+    for (let option of sizeSelect.options) {
+        if (!option.disabled) {
+            option.selected = true;  // Seleciona a primeira opção habilitada
+            break;  // Sai do loop após encontrar a primeira opção habilitada
+        }
+    }
+
+    // Atualiza a quantidade máxima permitida com base no estoque do tamanho selecionado
+    sizeSelect.addEventListener('change', function() {
+        let selectedSize = "P-" + sizeSelect.value;
+        console.log(selectedSize)
+        let maxEstoque = estoque[selectedSize] || 0;
+        console.log(maxEstoque)
+        quantityInput.max = maxEstoque;
+        quantityInput.value = 1;  // Reseta a quantidade para 1
+        estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
+    });
+
+    // Define o valor máximo e exibe o estoque para o tamanho inicialmente selecionado
+    let selectedSize = "P-" +  sizeSelect.value;
+    console.log(selectedSize)
+    let maxEstoque = estoque[selectedSize] || 0;
+    console.log(maxEstoque)
+    if(maxEstoque < 1){
+        quantityInput.min = 0;
+        quantityInput.value = 0;
+    }
+    quantityInput.max = maxEstoque;
+    estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
 }
 
 initGoogleAPI();

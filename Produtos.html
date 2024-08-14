@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/produtos.css">
     <script src="https://apis.google.com/js/api.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </head>
 <body>
 
@@ -30,12 +30,18 @@
 <section class="top_section">
     <h1>Bem-vindo à Loja de Produtos</h1>
     <p>Confira nossos produtos exclusivos abaixo:</p>
+    <button class="carrinho-btn">
+        <img class="carrinho" src="/image/carrinho-de-compras.png" alt="Carrinho de Compras">
+    </button>
 </section>
 
 <section>
     <div class="produto">
         <h2>Camisa</h2>
         <div class="produto-interno">
+
+            
+            <!--
             <div class="info-produto">
                 
                 <p>Descrição breve do Produto 1.</p>
@@ -72,13 +78,46 @@
                             <td id="PretoEG"></td>
                             <td id="BrancoEG"></td>
                         </tr>
-                        <!-- Adicione mais linhas conforme necessário -->
                     </table>        
                     </div>
             </div>
-
+            -->
+            <div class="info-produto ">
+                <div class="product-options">
+                    <form>
+                        <div class="option">
+                            <label for="color">Cor:</label>
+                            <select id="color" name="color">
+                                <option value="branco">Branco</option>
+                                <option value="preto">Preto</option>
+                            </select>
+                        </div>
+        
+                        <div class="option">
+                            <label for="size">Tamanho:</label>
+                            <select id="size" name="size">
+                                <option value="P">P</option>
+                                <option value="M">M</option>
+                                <option value="G">G</option>
+                                <option value="GG">GG</option>
+                                <option value="EG">EG</option>
+                            </select>
+                        </div>
+        
+                        <div class="option" style="width: 90%;">
+                            <label for="quantity">Quantidade:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1">
+                            <p id="estoque-display" style="margin-top: 5px; color:black">Estoque disponível: --</p>
+                        </div>
+        
+                        <button type="submit" class="submit-btn">Adicionar ao Carrinho</button>
+                    </form>
+                </div>
+            </div>
+        
             <div class="divimg-produto">
                 <img class="imagem-produto" src="https://github.com/CAEngComputing/WebSite/blob/main/image/404.gif?raw=true">
+                
                 <button class="btn-comprar" id="btnInicio">fazer pedido</button>
             </div>
         </div>

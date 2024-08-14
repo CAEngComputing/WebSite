@@ -44,6 +44,7 @@
     align-items: center;
     text-align: center; /* Centraliza o texto horizontalmente */
     margin-bottom: 10%;
+    color:#2E3141;
 }
 
 .preco{
@@ -63,24 +64,88 @@ table {
 }
 
 th, td {
-    
-    
     padding: 8px; /* Adiciona um preenchimento interno */
     text-align: left; /* Alinha o texto à esquerda */
-
 }
 
 th {
     border-bottom: 3px solid #257a7a; /* Adiciona uma linha separadora */
     /*background-color: #3ea8a8; /* Adiciona cor de fundo ao cabeçalho */
-     /* Define a cor do texto do cabeçalho */
+    /* Define a cor do texto do cabeçalho */
 }
 
 .entre-linhas{
     border-bottom: 3px solid #257a7a;
 }
 
+/* Botão do carrinho*/
+.carrinho {
+    position: absolute;
+    top: 15%;
+    right: 1%;
+    max-height: 70%; /* A imagem não ultrapassará a altura da seção */
+    max-width: 30%; /* A largura máxima da imagem será 30% da largura da seção */
+    height: auto; /* Mantém a proporção da imagem */
+    display: flex;
+}
 
+.carrinho-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none; /* Remove o contorno ao focar no botão */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carrinho-btn:hover .carrinho {
+    transform: scale(1.1); /* Aumenta a imagem em 5% ao passar o mouse */
+}
+/*teste*/
+.product-options {
+    border: 2px solid #333; /* Cor da borda */
+    border-radius: 15px; /* Bordas arredondadas */
+    padding: 20px;
+    max-width: 300px; /* Largura máxima do quadro */
+    margin: 20px auto; /* Centralizar o quadro na página */
+    background-color: #f9f9f9; /* Cor de fundo */
+}
+
+.option {
+    margin-bottom: 15px;
+}
+
+.option label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.option select,
+.option input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    background-color: #333; /* Cor do botão */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: #555; /* Cor do botão ao passar o mouse */
+}
 
 /* Media Query para dispositivos móveis */
 @media screen and (max-width: 600px) {
