@@ -203,6 +203,7 @@ input[type="number"]::-webkit-outer-spin-button {
         justify-content: center; /* Centraliza os elementos verticalmente */
         
     }
+    
     .info-produto, .divimg-produto {
         display: flex;
         flex-grow: 1; /* Permite que o elemento cresça para ocupar o espaço disponível */
@@ -235,6 +236,15 @@ input[type="number"]::-webkit-outer-spin-button {
         background-color: #2E3141; /* Cor de fundo */
         margin-bottom: 10%;
     }
+    .carrinho-btn{
+        top: 5px;
+        display: block; /* Exibe o botão em telas menores */
+        height: 60px;
+        width: 60px;
+        z-index: 999; /* Garante que o botão esteja acima de outros elementos */
+        position:absolute; /* Fixa o botão na tela */
+    }
+    .carrinho{
 
-    
+    }
 }
