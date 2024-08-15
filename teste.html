@@ -2,129 +2,91 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Produto com Estoque Limitado</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function initGoogleAPI() {
-                gapi.load('client', start);
-            }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Numérico com Botões</title>
+    <style>
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+        }
 
-            async function start() {
-                await gapi.client.init({
-                    'apiKey': 'AIzaSyAlo7cHn7onfmt1toqphJKiiuJbYmEJgEA',
-                    'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                });
+        .quantity-container button {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-                let response = await gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '1hf8UC5AwSu3jy7RuLA4Pm3pOj5_vvCBKt3n04rdh5kk',
-                    range: 'Página1!A1:B6',
-                });
+        .quantity-container button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-                let range = response.result;
-                if (range.values.length > 0) {
-                    let estoque = {
-                        'P': parseInt(range.values[1][0]),
-                        'M': parseInt(range.values[2][0]),
-                        'G': parseInt(range.values[3][0]),
-                        'GG': parseInt(range.values[4][0]),
-                        'EG': parseInt(range.values[5][0])
-                    };
+        .quantity-container input[type="number"] {
+            width: 50px;
+            text-align: center;
+            font-size: 18px;
+            padding: 5px;
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+            appearance: none;
+        }
 
-                    // Imprime o estoque no console
-                    console.log("Estoque atual:", estoque);
-
-                    // Atualiza os elementos HTML com os valores de estoque
-                    document.getElementById('PretoP').innerText = `${estoque['P']}`;
-                    document.getElementById('PretoM').innerText = `${estoque['M']}`;
-                    document.getElementById('PretoG').innerText = `${estoque['G']}`;
-                    document.getElementById('PretoGG').innerText = `${estoque['GG']}`;
-                    document.getElementById('PretoEG').innerText = `${estoque['EG']}`;
-
-                    // Chama a função para atualizar o seletor de tamanho e o estoque exibido
-                    updateSizeOptions(estoque);
-                } else {
-                    console.log('No data found.');
-                }
-            }
-
-            function updateSizeOptions(estoque) {
-                let sizeSelect = document.getElementById('size');
-                let quantityInput = document.getElementById('quantity');
-                let estoqueDisplay = document.getElementById('estoque-display');
-
-                // Verifica cada opção de tamanho e habilita ou desabilita com base no estoque
-                for (let option of sizeSelect.options) {
-                    let size = option.value;
-                    if (estoque[size] && estoque[size] > 0) {
-                        option.disabled = false;
-                    } else {
-                        option.disabled = true;
-                    }
-                }
-
-                // Atualiza a quantidade máxima permitida com base no estoque do tamanho selecionado
-                sizeSelect.addEventListener('change', function() {
-                    let selectedSize = sizeSelect.value;
-                    let maxEstoque = estoque[selectedSize] || 0;
-                    quantityInput.max = maxEstoque;
-                    quantityInput.value = 1;  // Reseta a quantidade para 1
-                    estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
-                });
-
-                // Define o valor máximo e exibe o estoque para o tamanho inicialmente selecionado
-                let selectedSize = sizeSelect.value;
-                let maxEstoque = estoque[selectedSize] || 0;
-                quantityInput.max = maxEstoque;
-                estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
-            }
-
-            // Função para obter o valor atual da cor selecionada
-            function getSelectedColor() {
-                let colorSelect = document.getElementById('color');
-                let selectedColor = colorSelect.value;
-                console.log("Cor selecionada: " + selectedColor);
-                return selectedColor;
-            }
-
-            // Adiciona o evento de mudança ao seletor de cor
-            document.getElementById('color').addEventListener('change', getSelectedColor);
-
-            initGoogleAPI();
-        });
-    </script>
+        /* Remove as setas do input em navegadores WebKit */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="info-produto ">
-        <div class="product-options">
-            <form>
-                <div class="option">
-                    <label for="color">Cor:</label>
-                    <select id="color" name="color">
-                        <option value="branco">Branco</option>
-                        <option value="preto">Preto</option>
-                    </select>
-                </div>
-
-                <div class="option">
-                    <label for="size">Tamanho:</label>
-                    <select id="size" name="size">
-                        <option value="P">P</option>
-                        <option value="M">M</option>
-                        <option value="G">G</option>
-                        <option value="GG">GG</option>
-                        <option value="EG">EG</option>
-                    </select>
-                </div>
-
-                <div class="option" style="width: 90%;">
-                    <label for="quantity">Quantidade:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1">
-                    <p id="estoque-display" style="margin-top: 5px; color: black;">Estoque disponível: --</p>
-                </div>
-
-                <button type="submit" class="submit-btn">Adicionar ao Carrinho</button>
-            </form>
-        </div>
+    <div class="quantity-container">
+        <button type="button" id="decrement">-</button>
+        <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
+        <button type="button" id="increment">+</button>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInput = document.getElementById('quantity');
+            const decrementButton = document.getElementById('decrement');
+            const incrementButton = document.getElementById('increment');
+
+            // Função para atualizar os botões de incremento e decremento
+            function updateButtons() {
+                decrementButton.disabled = quantityInput.value <= quantityInput.min;
+                incrementButton.disabled = quantityInput.value >= quantityInput.max;
+            }
+
+            // Incrementar valor
+            incrementButton.addEventListener('click', function() {
+                if (quantityInput.value < quantityInput.max) {
+                    quantityInput.value = parseInt(quantityInput.value) + 1;
+                    updateButtons();
+                }
+            });
+
+            // Decrementar valor
+            decrementButton.addEventListener('click', function() {
+                if (quantityInput.value > quantityInput.min) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                    updateButtons();
+                }
+            });
+
+            // Atualiza os botões ao carregar a página
+            updateButtons();
+        });
+    </script>
 </body>
 </html>

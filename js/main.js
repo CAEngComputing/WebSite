@@ -158,50 +158,100 @@ async function start() {
 
 function updateSizeOptions(estoque) {
     let sizeSelect = document.getElementById('size');
+    let colorSelect = document.getElementById('color');
     let quantityInput = document.getElementById('quantity');
     let estoqueDisplay = document.getElementById('estoque-display');
-    console.log(estoque)
-    
-    // Verifica cada opção de tamanho e habilita ou desabilita com base no estoque
-    for (let option of sizeSelect.options) {
-        let size ="P-" + option.value;
-        if (estoque[size] && estoque[size] > 0) {
-            option.disabled = false;
-        } else {
-            option.disabled = true;
-        }
+    const decrementButton = document.getElementById('decrement');
+    const incrementButton = document.getElementById('increment');
+
+    // Função para atualizar os botões de incremento e decremento
+    function updateButtons(maxEstoque) {
+        decrementButton.disabled = quantityInput.value <= quantityInput.min;
+        incrementButton.disabled = quantityInput.value >= maxEstoque;
     }
 
-    // Muda o ponteiro para a próxima opção habilitada
-    for (let option of sizeSelect.options) {
-        if (!option.disabled) {
-            option.selected = true;  // Seleciona a primeira opção habilitada
-            break;  // Sai do loop após encontrar a primeira opção habilitada
+    // Incrementar valor
+    incrementButton.addEventListener('click', function() {
+        if (parseInt(quantityInput.value) < quantityInput.max) {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateButtons(quantityInput.max);
         }
-    }
-
-    // Atualiza a quantidade máxima permitida com base no estoque do tamanho selecionado
-    sizeSelect.addEventListener('change', function() {
-        let selectedSize = "P-" + sizeSelect.value;
-        console.log(selectedSize)
-        let maxEstoque = estoque[selectedSize] || 0;
-        console.log(maxEstoque)
-        quantityInput.max = maxEstoque;
-        quantityInput.value = 1;  // Reseta a quantidade para 1
-        estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
     });
 
-    // Define o valor máximo e exibe o estoque para o tamanho inicialmente selecionado
-    let selectedSize = "P-" +  sizeSelect.value;
-    console.log(selectedSize)
-    let maxEstoque = estoque[selectedSize] || 0;
-    console.log(maxEstoque)
-    if(maxEstoque < 1){
-        quantityInput.min = 0;
-        quantityInput.value = 0;
+    // Decrementar valor
+    decrementButton.addEventListener('click', function() {
+        if (parseInt(quantityInput.value) > quantityInput.min) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+            updateButtons(quantityInput.max);
+        }
+    });
+
+    // Função para obter o prefixo com base na cor selecionada
+    function getPrefix() {
+        return colorSelect.value === "preto" ? "P-" : "B-";
     }
-    quantityInput.max = maxEstoque;
-    estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
+
+    // Atualiza o estoque e os valores iniciais ao carregar a página
+    function updateStockInfo() {
+        let selectedSize = getPrefix() + sizeSelect.value;
+        let maxEstoque = estoque[selectedSize] || 0;
+        quantityInput.max = maxEstoque;
+
+        // Sempre volta o valor da quantidade para 1 ao alterar cor ou tamanho
+        if (maxEstoque > 0) {
+            quantityInput.min = 1;
+            quantityInput.value = 1; // Redefine a quantidade para 1
+        } else {
+            quantityInput.min = 0;
+            quantityInput.value = 0; // Redefine a quantidade para 0 se não houver estoque
+        }
+
+        estoqueDisplay.innerText = `Estoque disponível: ${maxEstoque}`;
+        updateButtons(maxEstoque);
+    }
+
+    // Configuração inicial das opções de tamanho com base no estoque
+    function updateSizeOptionsBasedOnStock() {
+        let prefix = getPrefix();
+        for (let option of sizeSelect.options) {
+            let size = prefix + option.value;
+            option.disabled = !(estoque[size] && estoque[size] > 0);
+        }
+
+        // Seleciona a primeira opção habilitada ao carregar a página
+        for (let option of sizeSelect.options) {
+            if (!option.disabled) {
+                option.selected = true;
+                break;
+            }
+        }
+    }
+
+    // Atualiza as informações ao mudar o tamanho ou a cor selecionada
+    sizeSelect.addEventListener('change', function() {
+        updateStockInfo();
+    });
+
+    colorSelect.addEventListener('change', function() {
+        updateSizeOptionsBasedOnStock();
+        updateStockInfo();
+    });
+
+    // Configuração inicial para a cor e tamanho selecionados
+    updateSizeOptionsBasedOnStock();
+    updateStockInfo();
+
+    // Verifica se o valor do input excede o estoque máximo permitido
+    quantityInput.addEventListener('input', function() {
+        let maxEstoque = quantityInput.max;
+        if (parseInt(quantityInput.value) > maxEstoque) {
+            quantityInput.value = maxEstoque; // Define o valor como o máximo permitido
+        }
+        updateButtons(maxEstoque);
+    });
 }
+
+
+
 
 initGoogleAPI();
